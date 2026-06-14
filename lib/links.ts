@@ -54,7 +54,7 @@ export type LockedLink = { key: string; label: string; icon: IconType; hint: str
 export const lockedLinks: LockedLink[] = [
   { key: "instagram", label: "Personal Instagram", icon: InstagramIcon, hint: "my private account" },
   { key: "projects", label: "Projects", icon: Folder, hint: "hackathons & devpost" },
-  { key: "personal-website", label: "Personal Website", icon: Globe, hint: "Isabel Abonitalla" },
+  { key: "personal-website", label: "Personal Website", icon: Globe, hint: "portfolio" },
 ];
 
 export type Pill = { label: string; href: string; icon: IconType };

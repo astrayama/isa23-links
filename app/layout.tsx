@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   description:
     "Link hub for isa23 (Screen Sage, Omniversal Seeker): podcast, software, photography, book, and social profiles. Where spirituality, science, and story collide.",
-  keywords: ["isa23", "Screen Sage", "Omniversal Seeker", "Seeker's Soliloquy", "Isabel Abonitalla"],
+  keywords: ["isa23", "Screen Sage", "Omniversal Seeker", "Seeker's Soliloquy"],
   authors: [{ name: "isa23" }],
   openGraph: {
     type: "website",

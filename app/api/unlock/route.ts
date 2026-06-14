@@ -13,7 +13,7 @@ function protectedLinks(): Record<string, string> {
     instagram: process.env.LINK_INSTAGRAM || "https://www.instagram.com/astrayama",
     projects: process.env.LINK_PROJECTS || "https://devpost.com/isabiiil",
     "personal-website":
-      process.env.LINK_PERSONAL_SITE || "https://isabel-abonitalla.lovable.app/",
+      process.env.LINK_PERSONAL_SITE || "https://isabel-abonitalla.vercel.app/",
   };
 }
 

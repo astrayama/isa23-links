@@ -5,9 +5,9 @@ export type NowItem = { label: string; value: string };
 export const now: { updated: string; items: NowItem[] } = {
   updated: "June 2026",
   items: [
-    { label: "Building", value: "Spoonful Steps — gentler task flows for spoonie brains" },
+    { label: "Building", value: "Yggdrasil 🌱 | Anicca ⚡ | Pantheon 👥" },
     { label: "Writing", value: "The Architecture of Life — the heart-chakra chapter" },
-    { label: "Reading", value: "anything where physics and mysticism start to rhyme" },
+    { label: "Watching", value: "Baki | Witch Hat Atelier | Rick & Morty | King of Queens" },
     { label: "Seeking", value: "kindred spirits living at the edge of science & spirit" },
   ],
 };

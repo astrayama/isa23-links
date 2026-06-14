@@ -1,49 +1,239 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   Design system — all colors HSL, driven by CSS variables.
+   The default palette is "Dawn"; the theme switcher swaps
+   palettes by setting data-theme on <html>.
+   ============================================================ */
+
+@layer base {
+  :root,
+  [data-theme="dawn"] {
+    /* Cosmic pastel palette — Dawn (default) */
+    --background: 250 60% 12%;
+    --foreground: 280 40% 95%;
+
+    --card: 250 50% 15%;
+    --card-foreground: 280 40% 95%;
+
+    --popover: 250 50% 15%;
+    --popover-foreground: 280 40% 95%;
+
+    --primary: 330 70% 75%; /* soft pastel pink */
+    --primary-foreground: 250 60% 12%;
+
+    --secondary: 270 60% 75%; /* pastel purple */
+    --secondary-foreground: 250 60% 12%;
+
+    --muted: 250 40% 20%;
+    --muted-foreground: 280 30% 70%;
+
+    --accent: 200 70% 75%; /* pastel blue */
+    --accent-foreground: 250 60% 12%;
+
+    --highlight: 50 80% 80%; /* soft yellow */
+    --highlight-foreground: 250 60% 12%;
+
+    --destructive: 0 70% 65%;
+    --destructive-foreground: 280 40% 95%;
+
+    --border: 250 40% 25%;
+    --input: 250 40% 25%;
+    --ring: 270 60% 75%;
+
+    --radius: 1.5rem;
+
+    --glow-pink: 330 70% 75%;
+    --glow-purple: 270 60% 75%;
+    --glow-blue: 200 70% 75%;
+    --glow-yellow: 50 80% 80%;
+
+    /* overlay tint over the cosmic background image */
+    --overlay-from: 250 60% 12%;
+    --overlay-via: 250 55% 14%;
+    --overlay-to: 250 60% 12%;
+    --overlay-opacity: 0.5;
+  }
+
+  /* Dusk — warm rose + amber, like a sunset sky */
+  [data-theme="dusk"] {
+    --background: 300 45% 12%;
+    --foreground: 30 50% 96%;
+    --card: 300 40% 16%;
+    --card-foreground: 30 50% 96%;
+    --popover: 300 40% 16%;
+    --popover-foreground: 30 50% 96%;
+    --primary: 350 80% 75%;
+    --secondary: 25 85% 72%;
+    --accent: 320 65% 72%;
+    --highlight: 40 90% 78%;
+    --border: 320 35% 26%;
+    --input: 320 35% 26%;
+    --ring: 350 80% 75%;
+    --glow-pink: 350 80% 75%;
+    --glow-purple: 320 65% 72%;
+    --glow-blue: 25 85% 72%;
+    --glow-yellow: 40 90% 78%;
+    --overlay-from: 310 55% 12%;
+    --overlay-via: 25 45% 16%;
+    --overlay-to: 300 55% 12%;
+    --overlay-opacity: 0.55;
+  }
+
+  /* Twilight — violet + magenta, the in-between hour */
+  [data-theme="twilight"] {
+    --background: 265 55% 11%;
+    --foreground: 280 45% 96%;
+    --card: 265 50% 15%;
+    --card-foreground: 280 45% 96%;
+    --popover: 265 50% 15%;
+    --popover-foreground: 280 45% 96%;
+    --primary: 285 75% 78%;
+    --secondary: 245 70% 76%;
+    --accent: 315 70% 76%;
+    --highlight: 190 75% 78%;
+    --border: 265 45% 26%;
+    --input: 265 45% 26%;
+    --ring: 285 75% 78%;
+    --glow-pink: 315 70% 76%;
+    --glow-purple: 285 75% 78%;
+    --glow-blue: 245 70% 76%;
+    --glow-yellow: 190 75% 78%;
+    --overlay-from: 265 60% 11%;
+    --overlay-via: 250 55% 13%;
+    --overlay-to: 265 60% 11%;
+    --overlay-opacity: 0.55;
+  }
+
+  /* Cosmos — deep indigo night, cooler and quieter */
+  [data-theme="cosmos"] {
+    --background: 230 55% 9%;
+    --foreground: 220 50% 96%;
+    --card: 230 50% 13%;
+    --card-foreground: 220 50% 96%;
+    --popover: 230 50% 13%;
+    --popover-foreground: 220 50% 96%;
+    --primary: 210 80% 76%;
+    --secondary: 255 70% 78%;
+    --accent: 190 75% 74%;
+    --highlight: 280 70% 82%;
+    --border: 230 45% 24%;
+    --input: 230 45% 24%;
+    --ring: 210 80% 76%;
+    --glow-pink: 255 70% 78%;
+    --glow-purple: 230 75% 74%;
+    --glow-blue: 200 85% 74%;
+    --glow-yellow: 280 70% 82%;
+    --overlay-from: 230 60% 8%;
+    --overlay-via: 235 55% 11%;
+    --overlay-to: 230 60% 8%;
+    --overlay-opacity: 0.7;
   }
 }
 
-html {
-  height: 100%;
+@layer utilities {
+  .glow-text {
+    text-shadow: 0 0 20px hsl(var(--glow-purple) / 0.6),
+      0 0 40px hsl(var(--glow-pink) / 0.4);
+  }
+
+  .glow-border {
+    box-shadow: 0 0 20px hsl(var(--glow-purple) / 0.3),
+      inset 0 0 20px hsl(var(--glow-purple) / 0.1);
+  }
+
+  .sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px hsl(var(--glow-purple) / 0.3),
+        0 0 40px hsl(var(--glow-pink) / 0.2);
+    }
+    50% {
+      box-shadow: 0 0 30px hsl(var(--glow-purple) / 0.5),
+        0 0 60px hsl(var(--glow-pink) / 0.4);
+    }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-quicksand), sans-serif;
+  }
+
+  /* smooth palette transitions when switching themes */
+  body,
+  .theme-transition * {
+    transition-property: background-color, border-color, color, box-shadow,
+      text-shadow;
+    transition-duration: 600ms;
+    transition-timing-function: ease;
+  }
 }
 
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+/* ============================================================
+   Respect prefers-reduced-motion — calm everything down.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .float,
+  .sparkle,
+  .pulse-glow {
+    animation: none !important;
   }
 }

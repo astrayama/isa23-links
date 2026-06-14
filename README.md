@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# isa23 · link hub
 
-## Getting Started
+A self-contained **Next.js (App Router)** rebuild of [isa23.lovable.app](https://isa23.lovable.app) — the cosmic-pastel link hub for **isa23** (Screen Sage / Omniversal Seeker). Where spirituality, science, and story collide. 🕉️⚛️💟
 
-First, run the development server:
+## What's inside
+
+- **Home** — animated `0 = 1 = ∞` hero, profile, latest podcast embed, a **Daily Oracle** card draw, a "Now" strip, the Screen Sage social cluster, primary + passcode-locked links, contact, and a newsletter signup.
+- **/software** — a filterable, tag-based gallery of the apps (journaling · mood · tarot · goals · neurodiversity · forecasting · writing).
+- **/photo-album** — masonry gallery with a keyboard-navigable lightbox.
+- **/equation** — the essay behind the equation, with scroll reveals.
+- **/unpublished-book** — *The Architecture of Life*.
+- **Sky-mood theme switcher** (Dawn / Dusk / Twilight / Cosmos) + an asset-free **ambient soundscape** (Web Audio), both in the floating control dock.
+
+## Tech
+
+Next.js 16 · React 19 · TypeScript · Tailwind CSS v3 · shadcn/ui · framer-motion · Resend · Zod. Fully accessible (focus states, `prefers-reduced-motion`) and SEO-ready (per-route metadata, JSON-LD, dynamic OG image).
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # then fill in your values
+npm run dev                  # http://localhost:3000
+npm run build && npm start   # production
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+See `.env.example`. Summary:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Var | Purpose |
+| --- | --- |
+| `RESEND_API_KEY` | Email for the contact form + newsletter (https://resend.com) |
+| `CONTACT_TO_EMAIL` | Where contact messages are delivered |
+| `RESEND_AUDIENCE_ID` | _(optional)_ Resend Audience to collect subscribers |
+| `CONTACT_FROM` | _(optional)_ verified sender address |
+| `UNLOCK_PASSCODE` | Passcode that unlocks the private links — **change this** |
+| `LINK_INSTAGRAM` / `LINK_PROJECTS` / `LINK_PERSONAL_SITE` | Targets for the gated links (kept server-side) |
 
-## Learn More
+`.env.local` is gitignored. On Vercel, set these in **Project → Settings → Environment Variables**.
 
-To learn more about Next.js, take a look at the following resources:
+## Editing content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Almost everything lives in `lib/` so you rarely touch components:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `lib/site.ts` — name, tagline, podcast, social URLs
+- `lib/links.ts` — primary, locked, and social pill links
+- `lib/apps.ts` — the software gallery (names, blurbs, tags)
+- `lib/oracle.ts` — the Daily Oracle deck
+- `lib/now.ts` — the "Now" strip
+- `lib/photos.ts` — photo album collections + captions
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- lucide removed brand/logo icons, so the social glyphs (YouTube, TikTok, Instagram, Spotify) live in `components/brand-icons.tsx`.
+- The passcode unlock uses a timing-safe compare with per-IP lockout (`lib/rate-limit.ts`). The target URLs never reach the client bundle.

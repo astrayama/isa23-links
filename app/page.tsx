@@ -62,7 +62,7 @@ export default function Home() {
           <p className="font-fredoka text-xl font-medium text-foreground/80">{site.emojiTagline}</p>
           <div className="h-px mx-8 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
           <p className="px-4 font-quicksand text-base font-semibold leading-snug text-foreground/90">{site.bio}</p>
-          <p className="px-4 font-quicksand text-xs tracking-widest uppercase text-foreground/45">{site.descriptor}</p>
+          <p className="font-quicksand text-xs tracking-wider uppercase text-foreground/45">{site.descriptor}</p>
         </div>
 
         {/* Featured: listen + draw a card + now */}

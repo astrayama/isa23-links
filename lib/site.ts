@@ -8,7 +8,7 @@ export const site = {
   tagline: "Where spirituality, science, and story collide",
   emojiTagline: "Where spirituality, science & story collide 🕉️⚛️💟",
   bio: "I help people see themselves clearly and evolve intentionally.",
-  descriptor: "Podcast · software · photography · words.",
+  descriptor: "podcast · software · photography · words",
   equation: "0 = 1 = ∞",
 
   store: "https://screenseiji.gumroad.com/",

@@ -58,9 +58,11 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="space-y-2 text-center">
-          <p className="font-fredoka text-xl font-medium text-foreground/90">{site.emojiTagline}</p>
-          <p className="px-4 font-quicksand text-sm text-foreground/70">{site.bio}</p>
+        <div className="space-y-3 text-center">
+          <p className="font-fredoka text-xl font-medium text-foreground/80">{site.emojiTagline}</p>
+          <div className="h-px mx-8 bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+          <p className="px-4 font-quicksand text-base font-semibold leading-snug text-foreground/90">{site.bio}</p>
+          <p className="px-4 font-quicksand text-xs tracking-widest uppercase text-foreground/45">{site.descriptor}</p>
         </div>
 
         {/* Featured: listen + draw a card + now */}

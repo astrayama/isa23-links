@@ -7,7 +7,7 @@ export const now: { updated: string; items: NowItem[] } = {
   items: [
     { label: "Building", value: "Yggdrasil 🌱 | Anicca ⚡ | Pantheon 👥" },
     { label: "Writing", value: "The Architecture of Life — the heart-chakra chapter" },
-    { label: "Watching", value: "Baki | Witch Hat Atelier | Rick & Morty | King of Queens" },
-    { label: "Seeking", value: "kindred spirits living at the edge of science & spirit" },
+    { label: "Watching", value: "Baki | Witch Hat Atelier | Rick & Morty" },
+    { label: "Seeking", value: "kindred spirits + collaborators"},
   ],
 };

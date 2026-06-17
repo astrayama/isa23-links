@@ -50,8 +50,8 @@ const themeInit = `(function(){try{var m=localStorage.getItem('isa-mood');if(m){
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="dawn" className={`${quicksand.variable} ${fredoka.variable}`}>
-      <body className="min-h-screen font-quicksand antialiased">
+    <html lang="en" data-theme="dawn" className={`${quicksand.variable} ${fredoka.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen font-quicksand antialiased" suppressHydrationWarning>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <ThemeProvider>
           <TooltipProvider delayDuration={200}>

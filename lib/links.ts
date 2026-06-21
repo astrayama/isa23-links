@@ -7,6 +7,7 @@ import {
   Folder,
   Globe,
   Podcast as PodcastIcon,
+  Coffee,
 } from "lucide-react";
 import {
   YoutubeIcon,
@@ -60,10 +61,11 @@ export const lockedLinks: LockedLink[] = [
 export type Pill = { label: string; href: string; icon: IconType };
 
 export const screenSagePills: Pill[] = [
+  { label: "Website", href: site.screenSage.website, icon: Globe },
+  { label: "Ko-fi", href: "https://ko-fi.com/screenseiji", icon: Coffee },
   { label: "YouTube", href: site.screenSage.youtube, icon: YoutubeIcon },
   { label: "TikTok", href: site.screenSage.tiktok, icon: TiktokIcon },
   { label: "Instagram", href: site.screenSage.instagram, icon: InstagramIcon },
-  { label: "Website", href: site.screenSage.website, icon: Globe },
 ];
 
 export const podcastPills: Pill[] = [

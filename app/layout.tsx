@@ -8,6 +8,7 @@ import { CosmicBackground } from "@/components/cosmic-background";
 import { StickyHeader } from "@/components/sticky-header";
 import { ControlDock } from "@/components/control-dock";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Toaster />
           </TooltipProvider>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

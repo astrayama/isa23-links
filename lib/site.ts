@@ -11,7 +11,7 @@ export const site = {
   descriptor: "podcast · software · photography · words",
   equation: "0 = 1 = ∞",
 
-  store: "https://screenseiji.gumroad.com/",
+  store: "https://www.etsy.com/shop/ScreenSageStudios",
 
   screenSage: {
     youtube: "https://www.youtube.com/@screenseiji",

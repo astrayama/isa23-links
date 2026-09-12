@@ -29,13 +29,6 @@ export type PrimaryLink = {
 };
 
 export const primaryLinks: PrimaryLink[] = [
-  {
-    label: "Online Store",
-    href: site.store,
-    icon: ShoppingBag,
-    external: true,
-    description: "Screen Seiji shop",
-  },
   { label: "Software", href: "/software", icon: Code2, description: "Apps for mind, mood & meaning" },
   {
     label: "Photography Album",
@@ -48,6 +41,13 @@ export const primaryLinks: PrimaryLink[] = [
     href: "/unpublished-book",
     icon: BookText,
     description: "The Architecture of Life",
+  },
+  {
+    label: "Online Store",
+    href: site.store,
+    icon: ShoppingBag,
+    external: true,
+    description: "Screen Seiji shop",
   },
 ];
 

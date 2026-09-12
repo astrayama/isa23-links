@@ -5,7 +5,7 @@ import { AppGallery } from "@/components/app-gallery";
 export const metadata: Metadata = {
   title: "Software — apps for mind, mood & meaning",
   description:
-    "Web apps built by isa23: Yggdrasil journaling, Anicca mood tracking, Equilibrium goal balance, Mystic Ledger tarot journal, Spoonful Steps, and more.",
+    "Web apps built by isa23: Yggdrasil journaling, Anicca mood tracking, Arcana tarot & astrology, Spoonful Steps, and more.",
   alternates: { canonical: "/software" },
 };
 

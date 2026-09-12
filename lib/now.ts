@@ -7,7 +7,7 @@ export const now: { updated: string; items: NowItem[] } = {
   items: [
     { label: "Building", value: "Pantheon 👥 | Duality ☯️" },
     { label: "Writing", value: "The Architecture of Life — the heart-chakra chapter" },
-    { label: "Watching", value: "Jaadugar | Inept Villainess | Reno 911 | MCU/DCAU shows" },
+    { label: "Watching", value: "Jaadugar | Inept Villainess | Reno 911 | MCU/DCAU" },
     { label: "Seeking", value: "kindred spirits + collaborators"},
   ],
 };

@@ -3,11 +3,11 @@
 export type NowItem = { label: string; value: string };
 
 export const now: { updated: string; items: NowItem[] } = {
-  updated: "July 2026",
+  updated: "September 2026",
   items: [
-    { label: "Building", value: "Yggdrasil 🌱 | Arcana 🃏 | Pantheon 👥" },
+    { label: "Building", value: "Pantheon 👥 | Duality ☯️" },
     { label: "Writing", value: "The Architecture of Life — the heart-chakra chapter" },
-    { label: "Watching", value: "Jaadugar | A ton of other airing anime | Rick & Morty" },
+    { label: "Watching", value: "Jaadugar | Inept Villainess | Reno 911 | MCU/DCAU shows" },
     { label: "Seeking", value: "kindred spirits + collaborators"},
   ],
 };

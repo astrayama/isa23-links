@@ -23,7 +23,8 @@ export type AppEntry = {
   name: string;
   descriptor: string; // short "category" shown next to the name
   blurb: string; // what it's for / the problem it solves
-  href: string;
+  href?: string;
+  links?: { label: string; href: string }[];
   icon: LucideIcon;
   tags: AppTag[];
   // a CSS gradient (using hsl theme tokens) used as the card's art
@@ -49,7 +50,7 @@ export const apps: AppEntry[] = [
     descriptor: "insightful journaling",
     blurb:
       "Journaling that reflects your entries back to you — surfacing the patterns and roots beneath what you write.",
-    href: "https://yggdrasil-journal.lovable.app/",
+    href: "https://yggdrasil-dev-168739896450.us-central1.run.app",
     icon: BookOpen,
     tags: ["journaling"],
     gradient: "linear-gradient(135deg, hsl(140 50% 30% / 0.55), hsl(270 60% 35% / 0.55))",
@@ -67,23 +68,15 @@ export const apps: AppEntry[] = [
     gradient: "linear-gradient(135deg, hsl(200 70% 45% / 0.55), hsl(330 70% 45% / 0.55))",
   },
   {
-    slug: "equilibrium",
-    name: "Equilibrium",
-    descriptor: "balance your goals",
+    slug: "arcana",
+    name: "Arcana",
+    descriptor: "tarot & astrology app",
     blurb:
-      "Hold your competing goals in view at once so no single part of your life quietly gets neglected.",
-    href: "https://my-equilibrium.lovable.app/",
-    icon: Target,
-    tags: ["goals"],
-    gradient: "linear-gradient(135deg, hsl(50 80% 50% / 0.5), hsl(200 70% 45% / 0.55))",
-  },
-  {
-    slug: "mystic-ledger",
-    name: "Mystic Ledger",
-    descriptor: "tarot journal",
-    blurb:
-      "A tarot journal for logging your spreads and watching the story your cards tell unfold over time.",
-    href: "https://mystic-ledger.lovable.app/",
+      "A gorgeous, atmospheric tarot and astrology app to track your daily cosmic energy and personal spreads.",
+    links: [
+      { label: "Download", href: "https://testflight.apple.com/join/FZTcG7YT" },
+      { label: "More Info", href: "https://screenseiji.vercel.app/apps/arcana" },
+    ],
     icon: Moon,
     tags: ["tarot", "journaling"],
     gradient: "linear-gradient(135deg, hsl(265 60% 35% / 0.6), hsl(315 65% 40% / 0.55))",

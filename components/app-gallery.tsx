@@ -77,15 +77,11 @@ function FilterChip({
 
 function AppCard({ app }: { app: AppEntry }) {
   const Icon = app.icon;
-  return (
-    <a
-      href={app.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex h-full flex-col overflow-hidden rounded-3xl border-2 border-primary/30 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary/60 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-    >
+  
+  const content = (
+    <>
       <div
-        className="relative flex h-28 items-center justify-center"
+        className="relative flex h-28 shrink-0 items-center justify-center"
         style={{ background: app.gradient }}
       >
         <div className="absolute inset-0 bg-background/10" />
@@ -96,13 +92,49 @@ function AppCard({ app }: { app: AppEntry }) {
           <h3 className="font-fredoka text-lg font-medium text-foreground transition-all group-hover:glow-text">
             {app.name}
           </h3>
-          <ExternalLink className="h-4 w-4 shrink-0 text-primary/60 transition-colors group-hover:text-primary" />
+          {app.href && <ExternalLink className="h-4 w-4 shrink-0 text-primary/60 transition-colors group-hover:text-primary" />}
         </div>
         <p className="text-xs font-fredoka uppercase tracking-wide text-primary/70">
           {app.descriptor}
         </p>
         <p className="text-sm font-quicksand leading-relaxed text-foreground/70">{app.blurb}</p>
+        
+        {app.links && app.links.length > 0 && (
+          <div className="mt-auto flex flex-wrap gap-2 pt-4">
+            {app.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="z-10 rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-primary/40"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
-    </a>
+    </>
+  );
+
+  if (app.href) {
+    return (
+      <a
+        href={app.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex h-full flex-col overflow-hidden rounded-3xl border-2 border-primary/30 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary/60 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <div className="group flex h-full flex-col overflow-hidden rounded-3xl border-2 border-primary/30 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/60 hover:shadow-2xl">
+      {content}
+    </div>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Quicksand, Fredoka } from "next/font/google";
+import { Quicksand, Fredoka, Playpen_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -18,6 +18,12 @@ const quicksand = Quicksand({
 const fredoka = Fredoka({
   subsets: ["latin"],
   variable: "--font-fredoka",
+  display: "swap",
+});
+// Discord display-name font ("Monkey Bars") used by the Discord card.
+const playpen = Playpen_Sans({
+  subsets: ["latin"],
+  variable: "--font-playpen",
   display: "swap",
 });
 
@@ -51,7 +57,7 @@ const themeInit = `(function(){try{var m=localStorage.getItem('isa-mood');if(m){
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="dawn" className={`${quicksand.variable} ${fredoka.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="dawn" className={`${quicksand.variable} ${fredoka.variable} ${playpen.variable}`} suppressHydrationWarning>
       <body className="min-h-screen font-quicksand antialiased" suppressHydrationWarning>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <ThemeProvider>

@@ -29,6 +29,16 @@ export const site = {
     youtube:
       "https://youtube.com/playlist?list=PLFIy7SP1cnaoFKI1RVLYcxcsAphPf796h&si=ojqohZzYw_iNJfa4",
   },
+
+  // Profile visuals come from the invite's `inviter`; live presence from Lanyard.
+  discord: {
+    userId: "443139654825410561",
+    username: "isa23_",
+    inviteCode: "2rFyT6nskc",
+    invite: "https://discord.gg/2rFyT6nskc",
+    profile: "https://discord.com/users/443139654825410561",
+    serverName: "Screen Sage Sanctuary",
+  },
 } as const;
 
 export const sameAs = [

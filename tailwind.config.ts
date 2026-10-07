@@ -22,6 +22,7 @@ export default {
       fontFamily: {
         quicksand: ["var(--font-quicksand)", "sans-serif"],
         fredoka: ["var(--font-fredoka)", "sans-serif"],
+        playpen: ["var(--font-playpen)", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -106,6 +107,12 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        gummy: {
+          "0%, 100%": { transform: "scale(1, 1)" },
+          "30%": { transform: "scale(1.12, 0.88)" },
+          "50%": { transform: "scale(0.92, 1.1)" },
+          "70%": { transform: "scale(1.04, 0.97)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +123,7 @@ export default {
         "fade-in": "fade-in 0.6s ease-out both",
         "scale-in": "scale-in 0.5s ease-out both",
         shimmer: "shimmer 2.5s linear infinite",
+        gummy: "gummy 1.6s ease-in-out infinite",
       },
     },
   },

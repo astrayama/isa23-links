@@ -9,6 +9,7 @@ import { ScreenSageCard } from "@/components/screen-sage-card";
 import { LinkButton } from "@/components/link-button";
 import { LockedLinks } from "@/components/locked-links";
 import { ContactDialog } from "@/components/contact-dialog";
+import { DiscordCard } from "@/components/discord-card";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { Footer } from "@/components/footer";
 
@@ -107,6 +108,7 @@ export default function Home() {
         <section className="space-y-4">
           <SectionLabel>Connect</SectionLabel>
           <ContactDialog />
+          <DiscordCard />
           <NewsletterSignup />
         </section>
 

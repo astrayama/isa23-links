@@ -243,6 +243,17 @@ export function parseSideQuests(markdown: string): SideQuests {
   return { tagline: tagline.value, quests, colors, entriesByDate, warnings }
 }
 
+/** Active quests, most recently logged first; quests with no log go last. Ties keep their order. */
+export function activeByRecency(quests: Quest[]): Quest[] {
+  return quests
+    .filter(quest => quest.status === 'active')
+    .sort((a, b) => {
+      const x = a.latest?.date ?? ''
+      const y = b.latest?.date ?? ''
+      return x < y ? 1 : x > y ? -1 : 0
+    })
+}
+
 /** Splits log text into plain text and links ([text](url) or a bare http(s) URL). */
 export function parseInline(text: string): InlineSegment[] {
   const segments: InlineSegment[] = []

@@ -1,11 +1,13 @@
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
-import { parseSideQuests, type LogEntry } from "./parse";
+import { activeByRecency, parseSideQuests, type LogEntry } from "./parse";
 
 // Side quests live in ONE file in the screenseiji repo; this site only reads it.
 // Never copy quest text into this repo — edit content/side-quests.md there.
 export const SIDE_QUESTS_RAW_URL =
   "https://raw.githubusercontent.com/astrayama/screenseiji/main/content/side-quests.md";
 export const SIDE_QUESTS_PAGE_URL = "https://screenseiji.vercel.app/side-quests";
+/** The strip stays compact: the most recently logged active quests, then "View all quests →". */
+export const MAX_QUESTS = 4;
 
 export type ActiveQuest = {
   title: string;
@@ -15,7 +17,7 @@ export type ActiveQuest = {
 };
 
 /**
- * Active quests from the shared file, refreshed hourly (ISR).
+ * The most recently logged active quests from the shared file, refreshed hourly (ISR).
  *
  * - During `next build` (and in `next dev`) a failure returns null, so nothing
  *   breaks and the strip shows a fallback message. A hung request gives up
@@ -31,8 +33,8 @@ export async function getActiveQuests({ timeoutMs = 10_000 } = {}): Promise<Acti
     });
     if (!res.ok) throw new Error(`Fetching side quests failed: ${res.status} ${res.statusText}`);
     const { quests } = parseSideQuests(await res.text());
-    return quests
-      .filter((quest) => quest.status === "active")
+    return activeByRecency(quests)
+      .slice(0, MAX_QUESTS)
       .map(({ title, color, link, latest }) => ({ title, color, link, latest }));
   } catch (err) {
     const building = process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD;

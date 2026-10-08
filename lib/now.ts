@@ -4,6 +4,7 @@
 
 export type NowItem = { label: string; value: string };
 
+// `updated` dates these hand-edited items only (shown under them as "As of …").
 export const now: { updated: string; items: NowItem[] } = {
   updated: "September 2026",
   items: [

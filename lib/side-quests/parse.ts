@@ -100,7 +100,7 @@ interface DraftQuest {
 }
 
 export function parseSideQuests(markdown: string): SideQuests {
-  const { text, colorsComment } = stripComments(markdown.replace(/\r\n?/g, '\n'))
+  const { text, colorsComment } = stripComments(markdown.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n'))
   const lines = text.split('\n')
 
   let tagline: Located | undefined
@@ -123,7 +123,7 @@ export function parseSideQuests(markdown: string): SideQuests {
       if (ITEM.test(trimmed)) {
         throw new SideQuestsParseError(line, 'Fields and log entries must start at the beginning of the line, not indented.')
       }
-      continues.value = `${continues.value} ${trimmed}`
+      continues.value = continues.value ? `${continues.value} ${trimmed}` : trimmed
       return
     }
     continues = undefined
@@ -200,6 +200,9 @@ export function parseSideQuests(markdown: string): SideQuests {
       return
     }
 
+    if (/^[-*]\s+\*\*[^*]+\*\*:/.test(trimmed)) {
+      throw new SideQuestsParseError(line, `Put the colon inside the bold, like "- **Status:** active": "${trimmed}"`)
+    }
     throw new SideQuestsParseError(line, `Unexpected line: "${trimmed}"`)
   })
 
@@ -326,6 +329,10 @@ function stripComments(text: string): { text: string; colorsComment?: Located } 
     if (end === -1) throw new SideQuestsParseError(line, 'Unclosed "<!--" comment.')
     const body = text.slice(start + 4, end)
     const colors = /^\s*colors\s*:([\s\S]*)$/i.exec(body)
+    // A near-miss would otherwise be ignored as a plain comment and silently unpin every color.
+    if (!colors && (/^\s*colou?rs?\b/i.test(body) || /:\s*#[0-9a-f]{3,6}\b/i.test(body))) {
+      throw new SideQuestsParseError(line, 'Write the colors line exactly as <!-- colors: Quest: #hex, Other quest: #hex -->.')
+    }
     if (colors) {
       if (colorsComment) throw new SideQuestsParseError(line, 'Only one <!-- colors: --> line is allowed.')
       colorsComment = { value: colors[1], line }

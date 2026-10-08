@@ -15,12 +15,7 @@ export async function NowStrip() {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/70" />
           <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
         </span>
-        <h2 className="font-fredoka text-sm font-medium text-foreground">
-          Now
-          <span className="ml-2 font-quicksand text-xs font-normal text-foreground/40">
-            {now.updated}
-          </span>
-        </h2>
+        <h2 className="font-fredoka text-sm font-medium text-foreground">Now</h2>
       </div>
 
       <div className="mb-3 border-b border-primary/15 pb-3">
@@ -51,6 +46,8 @@ export async function NowStrip() {
           </li>
         ))}
       </ul>
+      {/* Dates only the hand-edited rows; the quests above are live. */}
+      <p className="mt-2 font-quicksand text-xs text-foreground/40">As of {now.updated}</p>
     </div>
   );
 }

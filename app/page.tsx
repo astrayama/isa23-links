@@ -13,6 +13,9 @@ import { DiscordCard } from "@/components/discord-card";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { Footer } from "@/components/footer";
 
+// Re-render at most hourly so the Now strip picks up side-quest edits without a redeploy.
+export const revalidate = 3600;
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",

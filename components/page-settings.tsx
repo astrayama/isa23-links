@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Palette, Volume2, VolumeX, Sparkles, X } from "lucide-react";
 import { MOODS, useMood } from "./theme-provider";
-import { cn } from "@/lib/utils";
+import { SegmentedControl } from "./prism/segmented-control";
+import { Glyph } from "./prism/glyph";
 
 /* ----------------------------- ambient sound ----------------------------- */
 // A soft, evolving cosmic drone synthesized with the Web Audio API — no audio
@@ -89,63 +89,36 @@ function useAmbientSound() {
   return { on, toggle: () => (on ? stop() : start()) };
 }
 
-/* ------------------------------ control dock ------------------------------ */
-export function ControlDock() {
+/** The Dawn/Dusk switch and the ambience toggle, side by side under the lists. */
+export function PageSettings() {
   const { mood, setMood } = useMood();
-  const [open, setOpen] = useState(false);
   const ambient = useAmbientSound();
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 font-quicksand">
-      {open && (
-        <div className="animate-scale-in origin-bottom-right rounded-3xl border-2 border-primary/30 bg-card/80 p-4 shadow-2xl backdrop-blur-md">
-          <div className="mb-3 flex items-center justify-between gap-6">
-            <span className="text-xs font-fredoka font-medium text-foreground/80">Sky mood</span>
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close controls"
-              className="text-foreground/50 hover:text-foreground"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </div>
-          <div className="mb-4 flex gap-2">
-            {MOODS.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setMood(m.id)}
-                aria-label={`${m.label} mood`}
-                aria-pressed={mood === m.id}
-                title={m.label}
-                className={cn(
-                  "h-8 w-8 rounded-full border-2 transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card",
-                  mood === m.id ? "border-foreground scale-110" : "border-white/20",
-                )}
-                style={{ background: m.swatch }}
-              />
-            ))}
-          </div>
-          <button
-            onClick={ambient.toggle}
-            aria-pressed={ambient.on}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/15 px-3 py-2 text-xs font-fredoka text-foreground/90 transition-colors hover:bg-primary/30"
-          >
-            {ambient.on ? <Volume2 className="h-4 w-4 text-primary" /> : <VolumeX className="h-4 w-4 text-primary" />}
-            {ambient.on ? "Ambience on" : "Play ambience"}
-          </button>
-        </div>
-      )}
-
+    <div className="pg-settings">
+      <SegmentedControl
+        label="Theme"
+        options={MOODS.map((m) => ({ value: m.id, label: m.label }))}
+        value={mood}
+        onChange={setMood}
+      />
       <button
-        onClick={() => setOpen((o) => !o)}
-        aria-label="Open mood & ambience controls"
-        aria-expanded={open}
-        className="group relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-primary/40 bg-card/70 text-primary shadow-xl backdrop-blur-md transition-all hover:scale-105 hover:border-primary/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        type="button"
+        onClick={ambient.toggle}
+        aria-pressed={ambient.on}
+        className="pg-btn pg-press pg-glass pg-glass--thin pg-ambience"
       >
-        {ambient.on && (
-          <span className="absolute inset-0 rounded-full pulse-glow" aria-hidden="true" />
+        {ambient.on ? (
+          <span className="pg-island__wave" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
+        ) : (
+          <Glyph name="note" />
         )}
-        {open ? <Palette className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
+        Ambience
       </button>
     </div>
   );

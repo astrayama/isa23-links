@@ -1,14 +1,19 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { useMemo, useState, type CSSProperties } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { apps, appTags, type AppEntry, type AppTag } from "@/lib/apps";
 import { cn } from "@/lib/utils";
+import { Button, Glass } from "./prism/glass";
+import { Glyph, iconColor } from "./prism/glyph";
 
 type Filter = AppTag | "all";
 
+// The design's --pg-bounce, close enough for cards reflowing between filters.
+const SPRING = { type: "spring", duration: 0.55, bounce: 0.25 } as const;
+
 export function AppGallery() {
+  const reduce = useReducedMotion();
   const [filter, setFilter] = useState<Filter>("all");
 
   // only show tag chips that actually appear on an app
@@ -21,8 +26,8 @@ export function AppGallery() {
   const visible = filter === "all" ? apps : apps.filter((a) => a.tags.includes(filter));
 
   return (
-    <div>
-      <div className="mb-8 flex flex-wrap justify-center gap-2">
+    <div className="flex flex-col gap-5">
+      <div role="group" aria-label="Filter apps" className="pg-chips pg-launch justify-center" style={{ "--i": 1 } as CSSProperties}>
         <FilterChip active={filter === "all"} onClick={() => setFilter("all")}>
           All
         </FilterChip>
@@ -33,14 +38,14 @@ export function AppGallery() {
         ))}
       </div>
 
-      <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {visible.map((app) => (
+      <motion.div layout={!reduce} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {visible.map((app, n) => (
           <motion.div
             key={app.slug}
-            layout
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
+            layout={!reduce}
+            initial={reduce ? false : { opacity: 0, scale: 0.94, y: 18, filter: "blur(8px)" }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ ...SPRING, delay: reduce ? 0 : 0.11 + n * 0.055 }}
           >
             <AppCard app={app} />
           </motion.div>
@@ -61,13 +66,12 @@ function FilterChip({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-sm font-fredoka transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-        active
-          ? "border-primary bg-primary/30 text-foreground glow-border"
-          : "border-primary/30 bg-card/40 text-foreground/70 hover:border-primary/60 hover:text-foreground",
+        "pg-btn pg-btn--small pg-press",
+        active ? "pg-btn--tinted" : "pg-glass pg-glass--thin",
       )}
     >
       {children}
@@ -76,65 +80,31 @@ function FilterChip({
 }
 
 function AppCard({ app }: { app: AppEntry }) {
-  const Icon = app.icon;
-  
-  const content = (
-    <>
-      <div
-        className="relative flex h-28 shrink-0 items-center justify-center"
-        style={{ background: app.gradient }}
-      >
-        <div className="absolute inset-0 bg-background/10" />
-        <Icon className="relative h-10 w-10 text-foreground drop-shadow-[0_0_12px_rgba(0,0,0,0.5)]" />
-      </div>
-      <div className="flex flex-1 flex-col gap-2 p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <h3 className="font-fredoka text-lg font-medium text-foreground transition-all group-hover:glow-text">
-            {app.name}
-          </h3>
-          {app.href && <ExternalLink className="h-4 w-4 shrink-0 text-primary/60 transition-colors group-hover:text-primary" />}
-        </div>
-        <p className="text-xs font-fredoka uppercase tracking-wide text-primary/70">
-          {app.descriptor}
-        </p>
-        <p className="text-sm font-quicksand leading-relaxed text-foreground/70">{app.blurb}</p>
-        
-        {app.links && app.links.length > 0 && (
-          <div className="mt-auto flex flex-wrap gap-2 pt-4">
-            {app.links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="z-10 rounded-full bg-primary/20 px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-primary/40"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-    </>
-  );
-
-  if (app.href) {
-    return (
-      <a
-        href={app.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex h-full flex-col overflow-hidden rounded-3xl border-2 border-primary/30 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary/60 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-      >
-        {content}
-      </a>
-    );
-  }
-
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-3xl border-2 border-primary/30 bg-card/50 backdrop-blur-sm transition-all duration-300 hover:border-primary/60 hover:shadow-2xl">
-      {content}
-    </div>
+    <Glass as="section" ariaLabel={app.name} className="flex h-full flex-col gap-3 rounded-lg p-4">
+      <div className="flex items-center gap-3">
+        <span className="pg-app__icon !h-14 !w-14 shrink-0" style={iconColor(app.color)} aria-hidden="true">
+          <Glyph name={app.glyph} weight={2.2} />
+        </span>
+        <div className="min-w-0">
+          <h2 className="title-3 text-label">{app.name}</h2>
+          <p className="eyebrow mt-0.5 text-accent">{app.descriptor}</p>
+        </div>
+      </div>
+      <p className="subheadline text-label-2">{app.blurb}</p>
+
+      <div className="mt-auto flex flex-wrap gap-2 pt-1">
+        {app.href && (
+          <Button href={app.href} external variant="tinted" small icon="out">
+            Open
+          </Button>
+        )}
+        {app.links?.map((link, i) => (
+          <Button key={link.href} href={link.href} external variant={i === 0 && !app.href ? "tinted" : "glass"} small>
+            {link.label}
+          </Button>
+        ))}
+      </div>
+    </Glass>
   );
 }

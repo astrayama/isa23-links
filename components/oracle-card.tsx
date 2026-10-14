@@ -1,47 +1,60 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
-import { getDailyCard } from "@/lib/oracle";
+import { useState, type CSSProperties } from "react";
+import { getDailyCard, type OracleCard as Card } from "@/lib/oracle";
+import { Sparkle } from "./prism/glyph";
 
-export function OracleCard() {
+/**
+ * The Daily Oracle as a medium widget that flips like a tarot card. The back is
+ * a holographic card whose colours slowly cycle; tap it and it turns on the
+ * bouncy spring to reveal today's card. Tapping again turns it back over.
+ */
+export function OracleCard({ i }: { i?: number }) {
   const [revealed, setRevealed] = useState(false);
-  const card = getDailyCard();
+  // Drawn on tap, in the visitor's own timezone, so it's their card for today.
+  const [card, setCard] = useState<Card | null>(null);
+
+  const toggle = () => {
+    if (!card) setCard(getDailyCard());
+    setRevealed((r) => !r);
+  };
 
   return (
-    <div className="[perspective:1200px]">
-      <button
-        onClick={() => setRevealed(true)}
-        aria-label={revealed ? `Today's card: ${card.name}` : "Draw your card for today"}
-        className="block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-3xl"
-      >
-        <motion.div
-          className="relative h-44 w-full [transform-style:preserve-3d]"
-          animate={{ rotateY: revealed ? 180 : 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
-          {/* face down */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 rounded-3xl border-2 border-primary/40 bg-card/60 p-5 text-center backdrop-blur-sm pulse-glow [backface-visibility:hidden]">
-            <Sparkles className="h-7 w-7 text-primary" />
-            <p className="font-fredoka text-base font-medium text-foreground glow-text">
-              Daily Oracle
-            </p>
-            <p className="text-xs font-quicksand text-foreground/60">
-              tap to draw your card for today
-            </p>
-          </div>
-
-          {/* revealed */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 rounded-3xl border-2 border-primary/50 bg-gradient-to-br from-card/80 to-secondary/20 p-5 text-center backdrop-blur-sm [transform:rotateY(180deg)] [backface-visibility:hidden]">
-            <span className="text-3xl" aria-hidden="true">
-              {card.glyph}
-            </span>
-            <p className="font-fredoka text-sm font-semibold text-primary glow-text">{card.name}</p>
-            <p className="text-xs font-quicksand leading-snug text-foreground/80">{card.message}</p>
-          </div>
-        </motion.div>
-      </button>
-    </div>
+    <button
+      type="button"
+      onClick={toggle}
+      aria-pressed={revealed}
+      aria-label={
+        revealed && card
+          ? `${card.name}. ${card.message} Tap to draw again.`
+          : "Daily Oracle. Tap to draw your card for today"
+      }
+      className={`pg-oracle pg-press${revealed ? " is-revealed" : ""}${typeof i === "number" ? " pg-launch" : ""}`}
+      style={typeof i === "number" ? ({ "--i": i } as CSSProperties) : undefined}
+    >
+      <span className="pg-oracle__inner">
+        <span className="pg-oracle__face pg-oracle__back pg-glass" aria-hidden="true">
+          <span className="pg-oracle__sigil">
+            <Sparkle color="#ffffff" />
+          </span>
+          <span>
+            <span className="pg-widget__eyebrow eyebrow">Daily Oracle</span>
+            <span className="pg-widget__title title-2 block">Draw your card</span>
+            <span className="pg-oracle__hint footnote block">tap to draw your card for today</span>
+          </span>
+        </span>
+        <span className="pg-oracle__face pg-oracle__front pg-glass pg-glass--thick" aria-hidden="true">
+          <span className="pg-widget__eyebrow eyebrow">
+            {card?.glyph} Daily Oracle
+          </span>
+          <span className="pg-widget__title title-2 block">{card?.name}</span>
+          <span className="pg-oracle__msg serif-italic block">{card?.message}</span>
+          <span className="pg-oracle__hint footnote block">tap to draw again</span>
+        </span>
+      </span>
+      <span aria-live="polite" className="sr-only">
+        {revealed && card ? `${card.name}. ${card.message}` : ""}
+      </span>
+    </button>
   );
 }

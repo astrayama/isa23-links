@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Image as ImageIcon } from "lucide-react";
 import { BackLink } from "@/components/back-link";
 import { PhotoGallery } from "@/components/photo-gallery";
 
@@ -18,20 +17,14 @@ const jsonLd = {
 
 export default function PhotoAlbumPage() {
   return (
-    <main className="relative z-10 min-h-screen px-6 py-12">
+    <main className="pg-page pg-page--wide">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="mx-auto max-w-6xl space-y-10 animate-fade-in">
-        <div className="flex items-center gap-4">
-          <BackLink label="" />
-          <div className="flex items-center gap-3">
-            <ImageIcon className="h-8 w-8 text-primary" />
-            <h1 className="font-fredoka text-4xl font-bold text-foreground glow-text md:text-5xl">
-              Photo Album
-            </h1>
-          </div>
-        </div>
-        <PhotoGallery />
-      </div>
+      <BackLink />
+      <header className="pg-page-head pg-launch">
+        <p className="eyebrow text-accent">Photography</p>
+        <h1 className="large-title">Photo Album</h1>
+      </header>
+      <PhotoGallery />
     </main>
   );
 }

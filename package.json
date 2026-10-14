@@ -10,17 +10,10 @@
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./lib/side-quests/resolve-ts.mjs --test \"lib/**/*.test.mjs\""
   },
   "dependencies": {
-    "@radix-ui/react-aspect-ratio": "^1.1.9",
     "@radix-ui/react-dialog": "^1.1.16",
-    "@radix-ui/react-label": "^2.1.9",
-    "@radix-ui/react-select": "^2.3.0",
-    "@radix-ui/react-slot": "^1.2.5",
-    "@radix-ui/react-tooltip": "^1.2.9",
     "@vercel/analytics": "^2.0.1",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.40.0",
-    "lucide-react": "^1.18.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -30,7 +23,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -39,7 +31,6 @@
     "eslint-config-next": "16.2.9",
     "postcss": "^8.5.15",
     "tailwindcss": "^3.4.19",
-    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   }
 }

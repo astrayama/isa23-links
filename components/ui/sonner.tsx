@@ -1,20 +1,28 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { useMood } from "@/components/theme-provider";
 
+/** Toasts on thick Prism Glass, following Dawn/Dusk. */
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { mood } = useMood();
   return (
     <Sonner
-      theme="dark"
-      className="toaster group"
+      theme={mood === "dusk" ? "dark" : "light"}
+      position="top-center"
+      offset={60}
+      style={
+        {
+          "--normal-bg": "var(--glass-thick)",
+          "--normal-border": "var(--glass-outline)",
+          "--normal-text": "var(--label)",
+          "--border-radius": "var(--radius-md)",
+        } as CSSProperties
+      }
       toastOptions={{
-        classNames: {
-          toast:
-            "group toast group-[.toaster]:bg-card/95 group-[.toaster]:backdrop-blur-md group-[.toaster]:text-foreground group-[.toaster]:border-primary/30 group-[.toaster]:shadow-lg group-[.toaster]:rounded-2xl group-[.toaster]:font-quicksand",
-          description: "group-[.toast]:text-muted-foreground",
-          actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
-          cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
-        },
+        className: "font-sans !backdrop-blur-[36px] !backdrop-saturate-[1.8] !shadow-[var(--shadow-lift)]",
+        classNames: { description: "!text-[var(--label-2)]" },
       }}
       {...props}
     />

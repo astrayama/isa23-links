@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { useCallback, useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import { collections, type Photo } from "@/lib/photos";
+import { Glyph, type GlyphName } from "./prism/glyph";
 
 // flatten for lightbox navigation while keeping section grouping for display
 const flat: Photo[] = collections.flatMap((c) => c.photos);
@@ -46,91 +46,73 @@ export function PhotoGallery() {
 
   return (
     <>
-      <div className="space-y-16">
+      <div className="flex flex-col gap-10">
         {collections.map((c, ci) => {
           const base = collections.slice(0, ci).reduce((sum, cc) => sum + cc.photos.length, 0);
           return (
-          <section key={c.id}>
-            <div className="mb-2 text-center">
-              <h2
-                className={`font-fredoka text-3xl font-bold ${
-                  c.accent === "primary" ? "text-primary" : "text-secondary"
-                }`}
-              >
-                {c.title}
-              </h2>
-              <p className="mt-1 text-sm font-quicksand text-foreground/55">{c.subtitle}</p>
-            </div>
-            <div className="mt-6 gap-4 [column-fill:_balance] sm:columns-2 lg:columns-3">
-              {c.photos.map((photo, pj) => {
-                const gi = base + pj;
-                return (
-                  <button
-                    key={photo.src}
-                    onClick={() => setIndex(gi)}
-                    className={`group relative mb-4 block w-full overflow-hidden rounded-3xl border-2 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 ${
-                      c.accent === "primary"
-                        ? "border-primary/30 hover:border-primary/60"
-                        : "border-secondary/30 hover:border-secondary/60"
-                    }`}
-                  >
-                    <Image
-                      src={photo.src}
-                      alt={photo.alt}
-                      width={photo.width}
-                      height={photo.height}
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="w-full transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-background/80 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <span className="font-quicksand text-sm text-foreground/90">
+            <section key={c.id} className="pg-launch" style={{ "--i": ci + 1 } as CSSProperties}>
+              <div className="mb-4 text-center">
+                <h2 className="title-2 text-label">{c.title}</h2>
+                <p className="subheadline mt-1 text-label-2">{c.subtitle}</p>
+              </div>
+              <div className="gap-3 [column-fill:_balance] sm:columns-2 lg:columns-3">
+                {c.photos.map((photo, pj) => {
+                  const gi = base + pj;
+                  return (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      onClick={() => setIndex(gi)}
+                      aria-label={`${photo.alt}: ${photo.caption}`}
+                      className="group pg-press relative mb-3 block w-full overflow-hidden rounded-lg shadow-[0_0_0_.5px_var(--glass-outline),var(--shadow-glass)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+                    >
+                      <Image
+                        src={photo.src}
+                        alt=""
+                        width={photo.width}
+                        height={photo.height}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="w-full transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="footnote pg-glass pg-glass--thin pointer-events-none absolute bottom-3 left-3 rounded-full px-3 py-1 text-label opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                         {photo.caption}
                       </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
           );
         })}
       </div>
 
       {mounted && index !== null && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0618cc] backdrop-blur-xl"
           onClick={close}
           role="dialog"
           aria-modal="true"
           aria-label="Photo viewer"
         >
-          <button
-            onClick={close}
-            aria-label="Close"
-            className="absolute right-4 top-4 rounded-full border border-primary/30 bg-card/60 p-2 text-foreground/80 hover:text-foreground"
-          >
-            <X className="h-5 w-5" />
-          </button>
-          <button
+          <ViewerButton glyph="close" label="Close" onClick={close} className="right-4 top-4" />
+          <ViewerButton
+            glyph="back"
+            label="Previous photo"
             onClick={(e) => {
               e.stopPropagation();
               prev();
             }}
-            aria-label="Previous photo"
-            className="absolute left-2 rounded-full border border-primary/30 bg-card/60 p-2 text-foreground/80 hover:text-foreground sm:left-6"
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button
+            className="left-2 sm:left-6"
+          />
+          <ViewerButton
+            glyph="chevron"
+            label="Next photo"
             onClick={(e) => {
               e.stopPropagation();
               next();
             }}
-            aria-label="Next photo"
-            className="absolute right-2 rounded-full border border-primary/30 bg-card/60 p-2 text-foreground/80 hover:text-foreground sm:right-6"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
+            className="right-2 sm:right-6"
+          />
 
           <figure
             className="flex max-h-[88vh] max-w-[92vw] flex-col items-center gap-3"
@@ -142,16 +124,37 @@ export function PhotoGallery() {
               width={flat[index].width}
               height={flat[index].height}
               sizes="92vw"
-              className="max-h-[80vh] w-auto rounded-2xl border-2 border-primary/30 object-contain"
+              className="max-h-[80vh] w-auto rounded-lg object-contain shadow-[var(--shadow-lift)]"
               priority
             />
-            <figcaption className="font-quicksand text-sm text-foreground/70">
-              {flat[index].caption}
-            </figcaption>
+            <figcaption className="subheadline text-[#fbf8ff]">{flat[index].caption}</figcaption>
           </figure>
         </div>,
         document.body,
       )}
     </>
+  );
+}
+
+function ViewerButton({
+  glyph,
+  label,
+  onClick,
+  className,
+}: {
+  glyph: GlyphName;
+  label: string;
+  onClick: (e: React.MouseEvent) => void;
+  className: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={`pg-press absolute z-10 grid h-11 w-11 place-items-center rounded-full bg-[#ffffff24] text-white backdrop-blur-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${className}`}
+    >
+      <Glyph name={glyph} className="h-5 w-5" />
+    </button>
   );
 }

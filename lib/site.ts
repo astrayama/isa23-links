@@ -6,12 +6,10 @@ export const site = {
   // Update to the production domain after deploying.
   url: "https://isa23-links.vercel.app",
   tagline: "Where spirituality, science, and story collide",
-  emojiTagline: "Where spirituality, science & story collide 🕉️⚛️💟",
+  heroTagline: "where spirituality, science & story collide",
   bio: "I help people see themselves clearly and evolve intentionally.",
-  descriptor: "podcast · software · photography · words",
+  meta: ["podcast", "software", "photography", "words"],
   equation: "0 = 1 = ∞",
-
-  store: "https://www.etsy.com/shop/ScreenSageStudios",
 
   screenSage: {
     youtube: "https://www.youtube.com/@screenseiji",

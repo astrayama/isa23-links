@@ -1,31 +1,27 @@
 import type { Metadata } from "next";
-import { Quicksand, Fredoka, Playpen_Sans } from "next/font/google";
+import { Figtree, Fraunces, Nunito, Playpen_Sans } from "next/font/google";
+// prism.css first so Tailwind utilities (in globals.css) can adjust glass components.
+import "./prism.css";
 import "./globals.css";
 import { site } from "@/lib/site";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { getDiscordProfile } from "@/lib/discord";
+import { ThemeProvider, themeInitScript } from "@/components/theme-provider";
 import { CosmicBackground } from "@/components/cosmic-background";
-import { StickyHeader } from "@/components/sticky-header";
-import { ControlDock } from "@/components/control-dock";
+import { PresenceProvider } from "@/components/prism/presence";
+import { DynamicIsland } from "@/components/prism/dynamic-island";
+import { GlassLight } from "@/components/prism/glass-light";
+import { SheetsProvider } from "@/components/sheets";
+import { SiteDock } from "@/components/site-dock";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 
-const quicksand = Quicksand({
-  subsets: ["latin"],
-  variable: "--font-quicksand",
-  display: "swap",
-});
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  variable: "--font-fredoka",
-  display: "swap",
-});
+// Prism Glass type: SF Pro / SF Pro Rounded / New York on Apple devices,
+// these Google fonts everywhere else (see the font stacks in globals.css).
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
+const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito", display: "swap" });
+const fraunces = Fraunces({ subsets: ["latin"], style: "italic", variable: "--font-fraunces", display: "swap" });
 // Discord display-name font ("Monkey Bars") used by the Discord card.
-const playpen = Playpen_Sans({
-  subsets: ["latin"],
-  variable: "--font-playpen",
-  display: "swap",
-});
+const playpen = Playpen_Sans({ subsets: ["latin"], variable: "--font-playpen", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -53,21 +49,34 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.ico" },
 };
 
-const themeInit = `(function(){try{var m=localStorage.getItem('isa-mood');if(m){document.documentElement.setAttribute('data-theme',m);}}catch(e){}})();`;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // Cached for an hour; the home page reads the same profile.
+  const profile = await getDiscordProfile();
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="dawn" className={`${quicksand.variable} ${fredoka.variable} ${playpen.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen font-quicksand antialiased" suppressHydrationWarning>
-        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+    <html
+      lang="en"
+      className={`${figtree.variable} ${nunito.variable} ${fraunces.variable} ${playpen.variable}`}
+      suppressHydrationWarning
+    >
+      <body suppressHydrationWarning>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <ThemeProvider>
-          <TooltipProvider delayDuration={200}>
-            <CosmicBackground />
-            <StickyHeader />
-            {children}
-            <ControlDock />
-            <Toaster />
-          </TooltipProvider>
+          <PresenceProvider userId={site.discord.userId}>
+            <SheetsProvider>
+              <CosmicBackground />
+              <DynamicIsland
+                name={site.name}
+                avatar={profile.avatar.still}
+                messageHref={site.discord.profile}
+                joinHref={site.discord.invite}
+              />
+              {children}
+              <SiteDock />
+              <Toaster />
+              <GlassLight />
+            </SheetsProvider>
+          </PresenceProvider>
         </ThemeProvider>
         <Analytics />
       </body>

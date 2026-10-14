@@ -1,15 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { SparkleField } from "./sparkle";
 
 /**
- * Fixed, full-bleed cosmic background with a gentle pointer/scroll parallax.
- * The overlay tint is theme-driven (CSS vars), so it shifts with the mood
- * switcher. Parallax is disabled under prefers-reduced-motion.
+ * The Prism Glass wallpaper: the clouds image under a theme veil (`wall-dim`)
+ * and a twinkling star field, fixed behind the page. The image breathes slowly
+ * and drifts with the pointer and scroll; all of it stops under reduced motion.
  */
-export function CosmicBackground({ overlayClassName }: { overlayClassName?: string }) {
+export function CosmicBackground() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,24 +54,15 @@ export function CosmicBackground({ overlayClassName }: { overlayClassName?: stri
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-      <div ref={ref} className="absolute inset-0 will-change-transform" style={{ transform: "scale(1.12)" }}>
-        <Image
-          src="/img/cosmic-background.jpg"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+    <>
+      <div className="pg-wall__layer" aria-hidden="true">
+        <div ref={ref} className="pg-wall__parallax">
+          <div className="pg-wall__img" style={{ backgroundImage: 'url("/img/cosmic-background.jpg")' }} />
+        </div>
+        <div className="pg-wall__dim" />
+        <div className="pg-wall__stars" />
       </div>
-      <div
-        className={
-          overlayClassName ??
-          "absolute inset-0 bg-gradient-to-b from-[hsl(var(--overlay-from)/var(--overlay-opacity))] via-[hsl(var(--overlay-via)/var(--overlay-opacity))] to-[hsl(var(--overlay-to)/var(--overlay-opacity))]"
-        }
-      />
-      <SparkleField />
-    </div>
+      <div className="pg-scroll-edge" aria-hidden="true" />
+    </>
   );
 }

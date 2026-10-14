@@ -13,6 +13,8 @@ export type AnimatedAsset = { src: string; still: string };
 
 export type DiscordProfile = {
   displayName: string;
+  /** The @handle (Discord username). */
+  username: string;
   profileUrl: string;
   avatar: AnimatedAsset;
   decoration?: AnimatedAsset;
@@ -83,6 +85,7 @@ const nameplate = (asset: string): AnimatedAsset => ({
 
 const fallbackProfile = (): DiscordProfile => ({
   displayName: site.discord.username,
+  username: site.discord.username,
   profileUrl: site.discord.profile,
   avatar: { src: "/img/avatar.jpg", still: "/img/avatar.jpg" },
   server: { name: site.discord.serverName, inviteUrl: site.discord.invite },
@@ -118,6 +121,7 @@ export async function getDiscordProfile(): Promise<DiscordProfile> {
 
     return {
       displayName: user.global_name ?? user.username,
+      username: user.username,
       profileUrl: site.discord.profile,
       avatar: user.avatar ? avatar(user.id, user.avatar) : fallback.avatar,
       decoration: user.avatar_decoration_data

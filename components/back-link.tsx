@@ -1,14 +1,12 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Glass } from "./prism/glass";
+import { Glyph } from "./prism/glyph";
 
+/** iOS-style back capsule at the top of every subpage. */
 export function BackLink({ label = "Back" }: { label?: string }) {
   return (
-    <Link
-      href="/"
-      className="inline-flex items-center gap-2 font-fredoka text-foreground/70 transition-colors hover:text-primary"
-    >
-      <ArrowLeft className="h-5 w-5" />
+    <Glass variant="thin" href="/" className="pg-back pg-launch" ariaLabel={label === "Back" ? "Back to home" : label}>
+      <Glyph name="back" />
       {label}
-    </Link>
+    </Glass>
   );
 }

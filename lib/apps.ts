@@ -1,13 +1,4 @@
-import {
-  BookOpen,
-  Sparkles,
-  Target,
-  Moon,
-  TrendingUp,
-  ListChecks,
-  BookText,
-  type LucideIcon,
-} from "lucide-react";
+import type { GlyphName, IconColor } from "@/components/prism/glyph";
 
 export type AppTag =
   | "journaling"
@@ -25,10 +16,10 @@ export type AppEntry = {
   blurb: string; // what it's for / the problem it solves
   href?: string;
   links?: { label: string; href: string }[];
-  icon: LucideIcon;
+  // the app icon: a Prism Glass glyph on a coloured tile
+  glyph: GlyphName;
+  color: IconColor;
   tags: AppTag[];
-  // a CSS gradient (using hsl theme tokens) used as the card's art
-  gradient: string;
   // optional real preview image in /public/img
   image?: string;
 };
@@ -51,9 +42,9 @@ export const apps: AppEntry[] = [
     blurb:
       "Journaling that reflects your entries back to you — surfacing the patterns and roots beneath what you write.",
     href: "https://yggdrasil-dev-168739896450.us-central1.run.app",
-    icon: BookOpen,
+    glyph: "tree",
+    color: "mint",
     tags: ["journaling"],
-    gradient: "linear-gradient(135deg, hsl(140 50% 30% / 0.55), hsl(270 60% 35% / 0.55))",
     image: "/img/yggi-preview.png",
   },
   {
@@ -63,9 +54,9 @@ export const apps: AppEntry[] = [
     blurb:
       "Track how your mood and energy shift through the day, and start to notice what quietly moves them.",
     href: "https://anicca.lovable.app/",
-    icon: Sparkles,
+    glyph: "sparkles",
+    color: "sky",
     tags: ["mood", "journaling"],
-    gradient: "linear-gradient(135deg, hsl(200 70% 45% / 0.55), hsl(330 70% 45% / 0.55))",
   },
   {
     slug: "arcana",
@@ -77,9 +68,9 @@ export const apps: AppEntry[] = [
       { label: "Download", href: "https://testflight.apple.com/join/FZTcG7YT" },
       { label: "More Info", href: "https://screenseiji.vercel.app/apps/arcana" },
     ],
-    icon: Moon,
+    glyph: "moon",
+    color: "violet",
     tags: ["tarot", "journaling"],
-    gradient: "linear-gradient(135deg, hsl(265 60% 35% / 0.6), hsl(315 65% 40% / 0.55))",
   },
   {
     slug: "predict-the-edge",
@@ -88,9 +79,9 @@ export const apps: AppEntry[] = [
     blurb:
       "Sharpen your intuition by forecasting what's coming and scoring yourself against how it actually plays out.",
     href: "https://predict-the-edge.lovable.app/",
-    icon: TrendingUp,
+    glyph: "trend",
+    color: "indigo",
     tags: ["forecasting"],
-    gradient: "linear-gradient(135deg, hsl(230 70% 40% / 0.6), hsl(190 75% 45% / 0.5))",
   },
   {
     slug: "spoonful-steps",
@@ -99,9 +90,9 @@ export const apps: AppEntry[] = [
     blurb:
       "Gentle, spoon-aware task management built for neurodivergent minds — momentum without the burnout.",
     href: "https://spoonful-steps.lovable.app/",
-    icon: ListChecks,
+    glyph: "checklist",
+    color: "pink",
     tags: ["neurodiversity", "goals"],
-    gradient: "linear-gradient(135deg, hsl(330 70% 45% / 0.55), hsl(50 80% 50% / 0.45))",
   },
   {
     slug: "life-architecture-labs",
@@ -110,8 +101,8 @@ export const apps: AppEntry[] = [
     blurb:
       "The companion lab for the book — reimagining society through the seven chakras as a map for change.",
     href: "https://life-architecture-labs.lovable.app/",
-    icon: BookText,
+    glyph: "book",
+    color: "peach",
     tags: ["writing"],
-    gradient: "linear-gradient(135deg, hsl(270 60% 35% / 0.6), hsl(330 70% 45% / 0.5))",
   },
 ];

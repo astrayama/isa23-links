@@ -1,43 +1,42 @@
-"use client";
-
-import { Mic } from "lucide-react";
+import Image from "next/image";
 import { site } from "@/lib/site";
 import { podcastPills } from "@/lib/links";
-import { ScrollablePills, PillLink } from "./scrollable-pills";
+import { Glass } from "./prism/glass";
+import { SheetTrigger } from "./sheets";
 
-export function PodcastEmbed() {
-  const src = `https://open.spotify.com/embed/show/${site.podcast.spotifyShowId}?utm_source=generator&theme=0`;
-
+/**
+ * The podcast as a medium "Now Playing" widget: cover art, the show, a round
+ * play button (opens the Spotify player in a sheet) and platform chips.
+ */
+export function PodcastEmbed({ i }: { i?: number }) {
   return (
-    <div className="w-full rounded-3xl border-2 border-primary/30 bg-card/50 p-4 backdrop-blur-sm pulse-glow">
-      <div className="mb-3 flex items-center gap-2">
-        <Mic className="h-5 w-5 text-primary" />
-        <h2 className="font-fredoka text-lg font-medium text-foreground glow-text">
-          {site.podcast.name}
-        </h2>
-        <span className="ml-auto text-xs font-quicksand text-foreground/50">latest episodes</span>
-      </div>
-
-      <div className="overflow-hidden rounded-2xl border border-primary/20">
-        <iframe
-          title={`${site.podcast.name} on Spotify`}
-          src={src}
-          width="100%"
-          height={232}
-          loading="lazy"
-          frameBorder={0}
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          style={{ display: "block" }}
-        />
-      </div>
-
-      <div className="mt-3">
-        <ScrollablePills>
+    <Glass as="section" i={i} className="pg-widget pg-widget--medium pg-podcast" ariaLabel={site.podcast.name}>
+      <Image
+        src="/img/podcast-art.webp"
+        alt={`${site.podcast.name} cover art`}
+        width={276}
+        height={276}
+        sizes="138px"
+        priority
+        className="pg-podcast__art"
+      />
+      <div className="pg-podcast__body">
+        <p className="pg-widget__eyebrow eyebrow">Podcast</p>
+        <p className="pg-widget__title title-2">{site.podcast.name}</p>
+        <p className="pg-widget__sub subheadline">latest episodes</p>
+        <div className="pg-podcast__row">
+          <SheetTrigger sheet={{ name: "podcast" }} className="pg-play pg-press" ariaLabel={`Play ${site.podcast.name}`}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 4.5v15l12.5-7.5z" fill="currentColor" />
+            </svg>
+          </SheetTrigger>
           {podcastPills.map((p) => (
-            <PillLink key={p.label} href={p.href} label={p.label} icon={p.icon} />
+            <Glass key={p.label} variant="thin" href={p.href} external className="pg-chip">
+              {p.label}
+            </Glass>
           ))}
-        </ScrollablePills>
+        </div>
       </div>
-    </div>
+    </Glass>
   );
 }

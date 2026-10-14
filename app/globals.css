@@ -3,193 +3,254 @@
 @tailwind utilities;
 
 /* ============================================================
-   Design system — all colors HSL, driven by CSS variables.
-   The default palette is "Dawn"; the theme switcher swaps
-   palettes by setting data-theme on <html>.
+   Prism Glass tokens (https://claude.ai/artifact/QAoJXae3nZWo93FC2p8idv).
+   Dawn is the light theme, Dusk the dark one. With no saved choice the
+   page follows prefers-color-scheme; the Dawn/Dusk switch sets
+   data-theme on <html> to override it.
    ============================================================ */
 
 @layer base {
-  :root,
-  [data-theme="dawn"] {
-    /* Cosmic pastel palette — Dawn (default) */
-    --background: 250 60% 12%;
-    --foreground: 280 40% 95%;
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-figtree), "Segoe UI",
+      system-ui, sans-serif;
+    --font-rounded: ui-rounded, "SF Pro Rounded", var(--font-nunito), system-ui, sans-serif;
+    --font-serif: "New York", ui-serif, var(--font-fraunces), Georgia, serif;
+    --font-gummy: var(--font-playpen), var(--font-nunito), system-ui, sans-serif;
 
-    --card: 250 50% 15%;
-    --card-foreground: 280 40% 95%;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-10: 40px;
 
-    --popover: 250 50% 15%;
-    --popover-foreground: 280 40% 95%;
+    --radius-xs: 8px;
+    --radius-icon: 16px;
+    --radius-sm: 14px;
+    --radius-md: 22px;
+    --radius-lg: 28px;
+    --radius-xl: 34px;
+    --radius-full: 999px;
 
-    --primary: 330 70% 75%; /* soft pastel pink */
-    --primary-foreground: 250 60% 12%;
+    --blur-thin: 14px;
+    --blur-regular: 24px;
+    --blur-thick: 36px;
 
-    --secondary: 270 60% 75%; /* pastel purple */
-    --secondary-foreground: 250 60% 12%;
-
-    --muted: 250 40% 20%;
-    --muted-foreground: 280 30% 70%;
-
-    --accent: 200 70% 75%; /* pastel blue */
-    --accent-foreground: 250 60% 12%;
-
-    --highlight: 50 80% 80%; /* soft yellow */
-    --highlight-foreground: 250 60% 12%;
-
-    --destructive: 0 70% 65%;
-    --destructive-foreground: 280 40% 95%;
-
-    --border: 250 40% 25%;
-    --input: 250 40% 25%;
-    --ring: 270 60% 75%;
-
-    --radius: 1.5rem;
-
-    --glow-pink: 330 70% 75%;
-    --glow-purple: 270 60% 75%;
-    --glow-blue: 200 70% 75%;
-    --glow-yellow: 50 80% 80%;
-
-    /* overlay tint over the cosmic background image */
-    --overlay-from: 250 60% 12%;
-    --overlay-via: 250 55% 14%;
-    --overlay-to: 250 60% 12%;
-    --overlay-opacity: 0.5;
+    /* Colours that are the same in both themes */
+    --icon-violet: #7b3fe4;
+    --icon-pink: #d63384;
+    --icon-sky: #1f78d1;
+    --icon-mint: #0f8a6c;
+    --icon-peach: #c4511a;
+    --icon-indigo: #4b46d6;
+    --island: #000000;
+    --on-island: #ffffff;
+    --on-island-2: #c8c8d0;
+    --status-online: #23a55a;
+    --status-idle: #f0b232;
+    --status-dnd: #f23f43;
+    --status-offline: #80848e;
   }
 
-  /* Dusk — warm rose + amber, like a sunset sky */
-  [data-theme="dusk"] {
-    --background: 300 45% 12%;
-    --foreground: 30 50% 96%;
-    --card: 300 40% 16%;
-    --card-foreground: 30 50% 96%;
-    --popover: 300 40% 16%;
-    --popover-foreground: 30 50% 96%;
-    --primary: 350 80% 75%;
-    --secondary: 25 85% 72%;
-    --accent: 320 65% 72%;
-    --highlight: 40 90% 78%;
-    --border: 320 35% 26%;
-    --input: 320 35% 26%;
-    --ring: 350 80% 75%;
-    --glow-pink: 350 80% 75%;
-    --glow-purple: 320 65% 72%;
-    --glow-blue: 25 85% 72%;
-    --glow-yellow: 40 90% 78%;
-    --overlay-from: 310 55% 12%;
-    --overlay-via: 25 45% 16%;
-    --overlay-to: 300 55% 12%;
-    --overlay-opacity: 0.55;
+  /* Dawn (light) */
+  :root {
+    color-scheme: light;
+    --wall: #f1e6f6;
+    --wall-dim: #ffffff14;
+    --glass-thin: #ffffff40;
+    --glass: #ffffff6b;
+    --glass-thick: #ffffffad;
+    --glass-hi: #ffffffe6;
+    --glass-lo: #ffffff66;
+    --glass-outline: #2b1f5214;
+    --glass-press: #ffffffcc;
+    --label: #17112b;
+    --label-2: #3a3352;
+    --label-3: #4d4666;
+    --separator: #3c325a2e;
+    --accent: #5a23c2;
+    --accent-pink: #b4235f;
+    --on-accent: #ffffff;
+    --accent-fill: #5a23c2;
+    --tint-pink: #ffd2e8;
+    --tint-mint: #c8f4e4;
+    --tint-lavender: #e3d7ff;
+    --tint-peach: #ffe0cb;
+    --tint-sky: #d2eaff;
+    --ink-on-tint: #17112b;
+    --prism-pink: #ff8cc6;
+    --prism-peach: #ffb38a;
+    --prism-mint: #74e0bd;
+    --prism-sky: #86c8f7;
+    --prism-lavender: #b49bff;
+    --focus: #5a23c2;
+    --shadow-glass: 0 10px 30px -12px #4a2a8a40;
+    --shadow-lift: 0 22px 48px -16px #4a2a8a66;
+    --shadow-icon: 0 8px 18px -8px #2a145a73;
   }
 
-  /* Twilight — violet + magenta, the in-between hour */
-  [data-theme="twilight"] {
-    --background: 265 55% 11%;
-    --foreground: 280 45% 96%;
-    --card: 265 50% 15%;
-    --card-foreground: 280 45% 96%;
-    --popover: 265 50% 15%;
-    --popover-foreground: 280 45% 96%;
-    --primary: 285 75% 78%;
-    --secondary: 245 70% 76%;
-    --accent: 315 70% 76%;
-    --highlight: 190 75% 78%;
-    --border: 265 45% 26%;
-    --input: 265 45% 26%;
-    --ring: 285 75% 78%;
-    --glow-pink: 315 70% 76%;
-    --glow-purple: 285 75% 78%;
-    --glow-blue: 245 70% 76%;
-    --glow-yellow: 190 75% 78%;
-    --overlay-from: 265 60% 11%;
-    --overlay-via: 250 55% 13%;
-    --overlay-to: 265 60% 11%;
-    --overlay-opacity: 0.55;
+  /* Dusk (dark): the system default in dark mode, or the saved choice */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="dawn"]) {
+      color-scheme: dark;
+      --wall: #140c26;
+      --wall-dim: #0b0618b8;
+      --glass-thin: #1c14384d;
+      --glass: #1c143875;
+      --glass-thick: #1c1438b3;
+      --glass-hi: #ffffff59;
+      --glass-lo: #ffffff1f;
+      --glass-outline: #00000040;
+      --glass-press: #2a2050cc;
+      --label: #fbf8ff;
+      --label-2: #d9d0ef;
+      --label-3: #bfb5d9;
+      --separator: #ffffff24;
+      --accent: #cdb8ff;
+      --accent-pink: #ffaad6;
+      --on-accent: #170f2e;
+      --accent-fill: #cdb8ff;
+      --tint-pink: #ffaad6;
+      --tint-mint: #93efd3;
+      --tint-lavender: #cdb8ff;
+      --tint-peach: #ffc9a3;
+      --tint-sky: #a9dcff;
+      --ink-on-tint: #170f2e;
+      --prism-pink: #ffa6d3;
+      --prism-peach: #ffc7a1;
+      --prism-mint: #8ff0d2;
+      --prism-sky: #a4dcff;
+      --prism-lavender: #c9b3ff;
+      --focus: #cdb8ff;
+      --shadow-glass: 0 14px 36px -12px #000000a6;
+      --shadow-lift: 0 26px 56px -14px #000000cc;
+      --shadow-icon: 0 8px 18px -8px #000000b3;
+    }
+  }
+  :root[data-theme="dusk"] {
+    color-scheme: dark;
+    --wall: #140c26;
+    --wall-dim: #0b0618b8;
+    --glass-thin: #1c14384d;
+    --glass: #1c143875;
+    --glass-thick: #1c1438b3;
+    --glass-hi: #ffffff59;
+    --glass-lo: #ffffff1f;
+    --glass-outline: #00000040;
+    --glass-press: #2a2050cc;
+    --label: #fbf8ff;
+    --label-2: #d9d0ef;
+    --label-3: #bfb5d9;
+    --separator: #ffffff24;
+    --accent: #cdb8ff;
+    --accent-pink: #ffaad6;
+    --on-accent: #170f2e;
+    --accent-fill: #cdb8ff;
+    --tint-pink: #ffaad6;
+    --tint-mint: #93efd3;
+    --tint-lavender: #cdb8ff;
+    --tint-peach: #ffc9a3;
+    --tint-sky: #a9dcff;
+    --ink-on-tint: #170f2e;
+    --prism-pink: #ffa6d3;
+    --prism-peach: #ffc7a1;
+    --prism-mint: #8ff0d2;
+    --prism-sky: #a4dcff;
+    --prism-lavender: #c9b3ff;
+    --focus: #cdb8ff;
+    --shadow-glass: 0 14px 36px -12px #000000a6;
+    --shadow-lift: 0 26px 56px -14px #000000cc;
+    --shadow-icon: 0 8px 18px -8px #000000b3;
   }
 
-  /* Cosmos — deep indigo night, cooler and quieter */
-  [data-theme="cosmos"] {
-    --background: 230 55% 9%;
-    --foreground: 220 50% 96%;
-    --card: 230 50% 13%;
-    --card-foreground: 220 50% 96%;
-    --popover: 230 50% 13%;
-    --popover-foreground: 220 50% 96%;
-    --primary: 210 80% 76%;
-    --secondary: 255 70% 78%;
-    --accent: 190 75% 74%;
-    --highlight: 280 70% 82%;
-    --border: 230 45% 24%;
-    --input: 230 45% 24%;
-    --ring: 210 80% 76%;
-    --glow-pink: 255 70% 78%;
-    --glow-purple: 230 75% 74%;
-    --glow-blue: 200 85% 74%;
-    --glow-yellow: 280 70% 82%;
-    --overlay-from: 230 60% 8%;
-    --overlay-via: 235 55% 11%;
-    --overlay-to: 230 60% 8%;
-    --overlay-opacity: 0.7;
+  /* Only <html> gets the wall colour: a body background would paint over the
+     fixed wallpaper layer (z-index: -1). */
+  html {
+    background: var(--wall);
+  }
+
+  body {
+    min-height: 100vh;
+    color: var(--label);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* smooth palette change when switching Dawn/Dusk */
+  .theme-transition body,
+  .theme-transition .pg-glass,
+  .theme-transition .pg-wall__dim {
+    transition-property: background-color, color, box-shadow;
+    transition-duration: 600ms;
+    transition-timing-function: ease;
+  }
+}
+
+/* ---------------- Type scale ---------------- */
+@layer components {
+  .large-title {
+    font-family: var(--font-rounded);
+    font-size: 36px;
+    line-height: 40px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+  }
+  .title-2 {
+    font-family: var(--font-rounded);
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 750;
+  }
+  .title-3 {
+    font-family: var(--font-rounded);
+    font-size: 19px;
+    line-height: 24px;
+    font-weight: 750;
+  }
+  .headline {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 22px;
+    font-weight: 600;
+  }
+  .body {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+  .subheadline {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 450;
+  }
+  .footnote {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+  }
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  .serif-italic {
+    font-family: var(--font-serif);
+    font-size: 19px;
+    line-height: 26px;
+    font-weight: 500;
+    font-style: italic;
   }
 }
 
 @layer utilities {
-  .glow-text {
-    text-shadow: 0 0 20px hsl(var(--glow-purple) / 0.6),
-      0 0 40px hsl(var(--glow-pink) / 0.4);
-  }
-
-  .glow-border {
-    box-shadow: 0 0 20px hsl(var(--glow-purple) / 0.3),
-      inset 0 0 20px hsl(var(--glow-purple) / 0.1);
-  }
-
-  .sparkle {
-    animation: sparkle 2s ease-in-out infinite;
-  }
-
-  @keyframes sparkle {
-    0%,
-    100% {
-      opacity: 0.3;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.2);
-    }
-  }
-
-  .float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
-  }
-
-  .pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      box-shadow: 0 0 20px hsl(var(--glow-purple) / 0.3),
-        0 0 40px hsl(var(--glow-pink) / 0.2);
-    }
-    50% {
-      box-shadow: 0 0 30px hsl(var(--glow-purple) / 0.5),
-        0 0 60px hsl(var(--glow-pink) / 0.4);
-    }
-  }
-
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -199,28 +260,9 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-quicksand), sans-serif;
-  }
-
-  /* smooth palette transitions when switching themes */
-  body,
-  .theme-transition * {
-    transition-property: background-color, border-color, color, box-shadow,
-      text-shadow;
-    transition-duration: 600ms;
-    transition-timing-function: ease;
-  }
-}
-
 /* ============================================================
    Respect prefers-reduced-motion — calm everything down.
+   (prism.css also stops its own loops and springs.)
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -230,10 +272,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-  .float,
-  .sparkle,
-  .pulse-glow {
-    animation: none !important;
   }
 }

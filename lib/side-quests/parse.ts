@@ -9,7 +9,10 @@
 // understand throws a SideQuestsParseError naming the line, so a typo fails
 // loudly instead of silently dropping a quest or a log entry.
 
-export type QuestStatus = 'active' | 'paused' | 'complete'
+export type QuestStatus = 'active' | 'paused' | 'queued' | 'complete'
+
+/** main: the life quest of the moment (at most one active). self: practice and growth. dev: projects. */
+export type QuestType = 'main' | 'self' | 'dev'
 
 export interface LogEntry {
   /** Calendar date, YYYY-MM-DD. Keep it a string: `new Date()` would shift it a day west of UTC. */
@@ -19,9 +22,13 @@ export interface LogEntry {
 
 export interface Quest {
   title: string
+  /** `dev` when the file leaves it out. */
+  type: QuestType
   status: QuestStatus
   question: string
   milestone?: string
+  /** Calendar date the quest is aiming for, YYYY-MM-DD. */
+  target?: string
   link?: string
   color: string
   /** Oldest first; entries on the same day keep their order in the file. */
@@ -38,7 +45,7 @@ export interface DayEntry {
 
 export interface SideQuests {
   tagline: string
-  /** Sorted active → paused → complete, then by order in the file. */
+  /** Sorted active → paused → queued → complete, then by order in the file. */
   quests: Quest[]
   /** Every quest's color, pinned or fallback. */
   colors: Record<string, string>
@@ -64,20 +71,27 @@ export class SideQuestsParseError extends Error {
 }
 
 /** Allowed statuses, in display order. */
-export const STATUSES: readonly QuestStatus[] = ['active', 'paused', 'complete']
+export const STATUSES: readonly QuestStatus[] = ['active', 'paused', 'queued', 'complete']
+
+/** Allowed types. */
+export const TYPES: readonly QuestType[] = ['main', 'self', 'dev']
 
 /** Colors for quests missing from the `<!-- colors: -->` line, picked by a hash of the title. */
 export const FALLBACK_PALETTE: readonly string[] = [
   '#24bfb2', '#e8b860', '#60a5fa', '#f472b6', '#a3e635', '#fb923c', '#c084fc', '#f87171',
 ]
 
-const FIELDS: Record<string, 'status' | 'question' | 'milestone' | 'link'> = {
+type Field = 'type' | 'status' | 'question' | 'milestone' | 'target' | 'link'
+
+const FIELDS: Record<string, Field> = {
+  'type': 'type',
   'status': 'status',
   'question': 'question',
   'next milestone': 'milestone',
+  'target': 'target',
   'link': 'link',
 }
-const FIELD_NAMES = 'Status, Question, Next milestone, Link'
+const FIELD_NAMES = 'Type, Status, Question, Next milestone, Target, Link'
 
 const ITEM = /^[-*]\s+\*\*(.+?):\*\*\s*(.*)$/
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
@@ -94,7 +108,7 @@ interface Located {
 interface DraftQuest {
   title: string
   line: number
-  fields: Partial<Record<'status' | 'question' | 'milestone' | 'link', Located>>
+  fields: Partial<Record<Field, Located>>
   log: { date: string; text: string; line: number }[]
   hasLog: boolean
 }
@@ -211,6 +225,20 @@ export function parseSideQuests(markdown: string): SideQuests {
   }
 
   const quests = drafts.map(finishQuest)
+
+  // Sites show one main quest; a second active one would quietly go missing.
+  let activeMain: Quest | undefined
+  quests.forEach((quest, index) => {
+    if (quest.type !== 'main' || quest.status !== 'active') return
+    if (activeMain) {
+      throw new SideQuestsParseError(
+        drafts[index].line,
+        `Only one main quest can be active at a time: "${activeMain.title}" and "${quest.title}" both are. Set one to queued or paused.`,
+      )
+    }
+    activeMain = quest
+  })
+
   const warnings: string[] = []
   const pinned = colorsComment ? parseColors(colorsComment, drafts) : new Map<string, string>()
 
@@ -286,14 +314,23 @@ export function parseInline(text: string): InlineSegment[] {
 }
 
 function finishQuest(draft: DraftQuest): Quest {
-  const { status, question, milestone, link } = draft.fields
+  const { type, status, question, milestone, target, link } = draft.fields
 
+  if (type && !TYPES.includes(type.value as QuestType)) {
+    throw new SideQuestsParseError(type.line, `Type must be main, self or dev (lowercase), got "${type.value}".`)
+  }
   if (!status) throw new SideQuestsParseError(draft.line, `Quest "${draft.title}" is missing "- **Status:**".`)
   if (!STATUSES.includes(status.value as QuestStatus)) {
-    throw new SideQuestsParseError(status.line, `Status must be active, paused or complete (lowercase), got "${status.value}".`)
+    throw new SideQuestsParseError(status.line, `Status must be active, paused, queued or complete (lowercase), got "${status.value}".`)
   }
   if (!question) throw new SideQuestsParseError(draft.line, `Quest "${draft.title}" is missing "- **Question:**".`)
   if (!question.value) throw new SideQuestsParseError(question.line, `Quest "${draft.title}" has an empty Question.`)
+  if (target && target.value) {
+    if (!ISO_DATE.test(target.value)) {
+      throw new SideQuestsParseError(target.line, `Target must be a date like 2027-05-15 (YYYY-MM-DD), got "${target.value}".`)
+    }
+    if (!isRealDate(target.value)) throw new SideQuestsParseError(target.line, `${target.value} is not a real date.`)
+  }
   if (link && link.value && !HTTP_URL.test(link.value)) {
     throw new SideQuestsParseError(link.line, `Link must be an http(s) URL, got "${link.value}".`)
   }
@@ -314,9 +351,11 @@ function finishQuest(draft: DraftQuest): Quest {
 
   return {
     title: draft.title,
+    type: (type?.value || 'dev') as QuestType,
     status: status.value as QuestStatus,
     question: question.value,
     milestone: milestone?.value || undefined,
+    target: target?.value || undefined,
     link: link?.value || undefined,
     color: '',
     log,
